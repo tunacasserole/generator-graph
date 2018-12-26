@@ -1,0 +1,21 @@
+{
+  "name": "graph",
+  "description": "graph generator",
+  "main": "generators/index.js",
+  "authors": [
+    "Henderwood Corp"
+  ],
+  "license": "GPL-3.0",
+  "keywords": [
+    "yeoman-generator",
+    "we-r-awesome-you-lr"
+  ],
+  "homepage": "https://github.com/tunacasserole/generator-graph",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

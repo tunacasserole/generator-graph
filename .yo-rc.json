@@ -1,0 +1,9 @@
+{
+  "generator-node": {
+    "promptValues": {
+      "authorName": "Henderwood Corp.",
+      "authorEmail": "aaron@buildit.io",
+      "authorUrl": "www.ituna.io"
+    }
+  }
+}
