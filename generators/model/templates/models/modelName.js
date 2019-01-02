@@ -1,6 +1,8 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
+  const <%= modelName %> = sequelize.define('<%= modelName %>', {
+
+    // Model Attributes
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
@@ -12,17 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
     },
 
+    <%= modelAttrs %>
 
-    
+
   }, {});
 
-  // User.associate = function (models) {
-
-  //   models.User.hasMany(models.Role, {
-  //     foreignKey: "UserId",
-  //     sourceKey: "id"
-  //   })
-  // }
-  
-  return User;
+return <%= modelName %>;
 };

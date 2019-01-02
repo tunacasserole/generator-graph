@@ -5,6 +5,8 @@
 
 First, install [Yeoman](http://yeoman.io) and generator-graph using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
 
+use npm link when setting up a new project to create your WIP generator as a node module
+
 ```bash
 npm install -g yo
 npm install -g generator-graph
@@ -26,7 +28,6 @@ yo graph
 ## License
 
 GPL-3.0 © [Henderwood Corp.](www.ituna.io)
-
 
 [npm-image]: https://badge.fury.io/js/generator-graph.svg
 [npm-url]: https://npmjs.org/package/generator-graph
