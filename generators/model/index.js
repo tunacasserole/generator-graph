@@ -43,7 +43,9 @@ module.exports = class extends Generator {
     try {
       
       const modelMeta = yaml.safeLoad(fs.readFileSync('config/meta/complaint.yml', 'utf8'));
-      const attrs = Object.keys(modelMeta)
+      const attrs = Object.entries(modelMeta)
+      
+      // console.log(attrs)
 
       this.fs.copyTpl(
         this.templatePath('models/modelName.js'),

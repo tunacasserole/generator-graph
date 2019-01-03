@@ -1,4 +1,5 @@
 'use strict';
+
 const Generator = require('yeoman-generator');
 const chalk = require('chalk');
 const yosay = require('yosay');
@@ -38,7 +39,9 @@ module.exports = class extends Generator {
   }
 
   writing() {
-
+    
+    const metaFileName = `${this.props.modelName.charAt(0).toLowerCase()}${this.props.modelName.slice(1)}`
+    
     var config = require(this.destinationRoot() + '/config/sequelize.js');
 
     var sequelize = new Sequelize(
@@ -53,26 +56,24 @@ module.exports = class extends Generator {
         // Global Options
         paranoid: true
       });
-
+      
     sequelize.getQueryInterface().describeTable(this.props.tableName).then((tableObject) => {
 
-      const columns = Object.keys(tableObject)
+      const columns = Object.entries(tableObject)
 
-      const metaFileName = `${this.props.modelName.charAt(0).toLowerCase()}${this.props.modelName.slice(1)}`
-
+      console.log(columns)
+      console.log('--------- Writing Meta File ----------------')
+      
       // Write Meta YML File
       this.fs.copyTpl(
         this.templatePath('config/modelName.yml'),
         this.destinationPath(`config/meta/${metaFileName}.yml`),
-
-
-
-
-        // {
-        //   modelAttrs: columns.join(":\r\n") + ":"
-        // }
-      );
-
+        {
+          modelAttrs: columns
+        }
+        );
+        
+      console.log('--------- Writing Meta File ----------------')
       // process.exit()
 
 

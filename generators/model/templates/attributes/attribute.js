@@ -1,3 +1,3 @@
 <%= attr %>: {
-      type: DataTypes.<%= attrType %>,
+      type: DataTypes.<%= attrType %>
     },

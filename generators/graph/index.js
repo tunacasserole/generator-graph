@@ -2,6 +2,8 @@
 const Generator = require('yeoman-generator');
 const chalk = require('chalk');
 const yosay = require('yosay');
+const yaml = require('js-yaml');
+const fs = require('fs');
 
 const Sequelize = require('sequelize');
 
@@ -38,41 +40,26 @@ module.exports = class extends Generator {
   }
 
   writing() {
+    const modelMeta = yaml.safeLoad(fs.readFileSync('config/meta/complaint.yml', 'utf8'));
+    const attrs = Object.entries(modelMeta)
 
-    var config = require(this.destinationRoot() + '/config/sequelize.js');
+    const metaFileName = `${this.props.modelName.charAt(0).toLowerCase()}${this.props.modelName.slice(1)}`
 
-    var sequelize = new Sequelize(
-      config.database,
-      config.username,
-      config.password,
+    // Write GraphQL type filea
+    
+    this.fs.copyTpl(
+      this.templatePath('graphql/types/modelName.js'),
+      this.destinationPath(`graphql/types/${metaFileName}.js`),
       {
-        // DB Options
-        dialect: 'mysql',
-        host: config.host,
+        modelName: this.props.modelName,
+        modelAttrs: attrs
+      }
+    );
 
-        // Global Options
-        paranoid: true
-      });
+    // process.exit()
 
-    sequelize.getQueryInterface().describeTable(this.props.tableName).then((tableObject) => {
-
-      const columns = Object.keys(tableObject)
-
-      const metaFileName = `${this.props.modelName.charAt(0).toLowerCase()}${this.props.modelName.slice(1)}`
-
-      // Write Meta YML File
-      this.fs.copyTpl(
-        this.templatePath('config/modelName.yml'),
-        this.destinationPath(`config/meta/${metaFileName}.yml`),
-        {
-          modelAttrs: columns.join(":\r\n") + ":"
-        }
-      );
-
-      // process.exit()
-
-
-    })
 
   }
+
 }
+
