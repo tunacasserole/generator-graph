@@ -2,6 +2,9 @@
 const Generator = require('yeoman-generator');
 const chalk = require('chalk');
 const yosay = require('yosay');
+const helpers = require('../../lib/helpers')
+const yaml = require('js-yaml');
+const fs = require('fs');
 
 module.exports = class extends Generator {
 
@@ -12,12 +15,12 @@ module.exports = class extends Generator {
 
     const prompts = [
 
-      {
-        type: 'text',
-        name: 'modelName',
-        message: 'Enter model name',
-        default: "Complaint"
-      },
+      // {
+      //   type: 'text',
+      //   name: 'modelName',
+      //   message: 'Enter model name',
+      //   default: "Complaint"
+      // },
 
     ];
 
@@ -29,20 +32,31 @@ module.exports = class extends Generator {
 
   writing() {
 
-    // Retrieve model attributes from meta file
-    const modelAttrs = ['id', 'name']
+    // for testing set the model automatically
+    this.props.modelName = "Complaint"
 
-    // Write Model File
+    console.log('--------- parsing yaml ----------------')
+    
     const modelFileName = `${this.props.modelName.charAt(0).toLowerCase()}${this.props.modelName.slice(1)}.js`
+    
+    // Retrieve model attributes from meta file
+    try {
+      
+      const modelMeta = yaml.safeLoad(fs.readFileSync('config/meta/complaint.yml', 'utf8'));
+      const attrs = Object.keys(modelMeta)
 
-    this.fs.copyTpl(
-      this.templatePath('models/modelName.js'),
-      this.destinationPath(`models/${modelFileName}`),
-      {
-        modelName: this.props.modelName,
-        modelAttrs: modelAttrs
+      this.fs.copyTpl(
+        this.templatePath('models/modelName.js'),
+        this.destinationPath(`models/${modelFileName}`),
+        {
+          modelName: this.props.modelName,
+          modelAttrs: attrs
+        }
+        );
+        
+      } catch (e) {
+        console.log(e);
       }
-    );
 
   }
 

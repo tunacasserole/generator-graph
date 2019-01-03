@@ -64,9 +64,13 @@ module.exports = class extends Generator {
       this.fs.copyTpl(
         this.templatePath('config/modelName.yml'),
         this.destinationPath(`config/meta/${metaFileName}.yml`),
-        {
-          modelAttrs: columns.join(":\r\n") + ":"
-        }
+
+
+
+
+        // {
+        //   modelAttrs: columns.join(":\r\n") + ":"
+        // }
       );
 
       // process.exit()
