@@ -4,13 +4,13 @@ const GraphQLObjectType = GraphQL.GraphQLObjectType;
 const GraphQLString = GraphQL.GraphQLString
 const GraphQLList = GraphQL.GraphQLList
 
-const <%= modelName %>Type = require('../../types/<%= modelName %>')
+const UserType = require('../../types/user')
 const ErrorType = require('../../types/error')
 
 const Models = require('../../../models/index.js')
 
-const Create<%= modelName %>Input = new GraphQLInputObjectType({
-    name: "Create<%= modelName %>Input",
+const DeleteUserInput = new GraphQLInputObjectType({
+    name: "DeleteUserInput",
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt',
     fields() {
         return {
@@ -30,8 +30,8 @@ const Create<%= modelName %>Input = new GraphQLInputObjectType({
     }
 })
 
-const Create<%= modelName %>Payload = new GraphQLObjectType({
-    name: 'Create<%= modelName %>Payload',
+const DeleteUserPayload = new GraphQLObjectType({
+    name: 'DeleteUserPayload',
     description: 'Lorem ipsum dolar sit',
     fields() { 
         return {
@@ -43,8 +43,8 @@ const Create<%= modelName %>Payload = new GraphQLObjectType({
                 type: new GraphQLList(ErrorType),
                 description: 'Lorem ipsum dolar sit'
             },
-            <%= modelName %>: {
-                type: <%= modelName %>Type,
+            user: {
+                type: UserType,
                 description: 'Lorem ipsum dolar sit'
             }
         }
@@ -52,19 +52,19 @@ const Create<%= modelName %>Payload = new GraphQLObjectType({
 })
 
 module.exports = {
-  type: Create<%= modelName %>Payload,
+  type: DeleteUserPayload,
   description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.',
   args: {
     input: {
-      type: Create<%= modelName %>Input,
+      type: DeleteUserInput,
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.',
     }
   },
   
   resolve: async (root, args) => {
     let response = {}
-    await Models.<%= modelName %>.create(args.input).then((<%= modelName %>) => {
-        response.<%= modelName %> = <%= modelName %>
+    await Models.User.create(args.input).then((user) => {
+        response.user = user
     }).catch((err) => {
         let errors = err.errors.map(error => {
             return {

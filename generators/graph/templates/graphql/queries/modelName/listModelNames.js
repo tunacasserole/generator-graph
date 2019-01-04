@@ -1,14 +1,40 @@
 const GraphQL = require('graphql')
 const GraphQLList = GraphQL.GraphQLList
 const GraphQLString = GraphQL.GraphQLString
+const GraphQLBoolean = GraphQL.GraphQLBoolean
 const GraphQLInt = GraphQL.GraphQLInt
+const GraphQLObjectType = GraphQL.GraphQLObjectType;
 
 const Models = require('../../../models/index.js')
-const UserType = require('../../types/user.js')
 
+const <%= modelName %>ListType = new GraphQLObjectType({
+  name: '<%= modelName %>List',
+  fields() {
+    return {
+      <% var dataTypes = {
+        'VARCHAR(255)': 'GraphQLString',
+        'INT(11)': 'GraphQLInt',
+        'TINYINT(1)': 'GraphQLBoolean',
+        'TEXT': 'GraphQLString',
+        'DATE': 'GraphQLString',
+        'DATETIME': 'GraphQLString',
+        'DECIMAL': 'GraphQLFloat',
+        'FLOAT': 'GraphQLFloat',
+      } -%>
+      <% for (var i = 0; i < modelAttrs.length; i++) { %>
+        <%= modelAttrs[i][0] %>: {
+          type: <%= dataTypes[modelAttrs[i][1]["type"]] %>,
+          description: "description",
+         
+        },
+        <% } %>
+        
+    }
+  }
+})
 
 module.exports = {
-  type: new GraphQLList(UserType),
+  type: new GraphQLList(<%= modelName %>ListType),
   description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam fermentum sapien lacus, ut imperdiet orci elementum sed. Donec lobortis vel nunc sit amet luctus.',
   args: {
     limit: {
@@ -28,12 +54,8 @@ module.exports = {
       description: 'A list of sorting rules to be applied to the request.'
     }
   },
-  /*
-   * Resolver responsible for fetch a list of offices. Arguments include offset and limit for paging
-   * along with a search string for full-text searches. Additional support is required for handling
-   * filtering; i.e. where clauses with operators.
-   */
-  resolve(root, args) {
+
+  resolve: async (root, args) => {
     // Establish defaults and remove from arguments
     const offset = args.offset || 0
     const limit = args.limit || 10
@@ -43,6 +65,6 @@ module.exports = {
     delete args.search
 
     // Issue query and return the promise
-    return Models.User.findAll({where: args, include: [], offset, limit })
+    return await Models.<%= modelName %>.findAll({where: args, include: [], offset, limit })
   }
 };

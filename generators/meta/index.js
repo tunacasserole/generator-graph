@@ -61,9 +61,6 @@ module.exports = class extends Generator {
 
       const columns = Object.entries(tableObject)
 
-      console.log(columns)
-      console.log('--------- Writing Meta File ----------------')
-      
       // Write Meta YML File
       this.fs.copyTpl(
         this.templatePath('config/modelName.yml'),
@@ -73,7 +70,6 @@ module.exports = class extends Generator {
         }
         );
         
-      console.log('--------- Writing Meta File ----------------')
       // process.exit()
 
 

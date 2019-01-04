@@ -19,15 +19,8 @@ module.exports = class extends Generator {
 
       {
         type: 'text',
-        name: 'tableName',
-        message: 'Name of the table from which to rip meta.',
-        default: "complaints"
-      },
-
-      {
-        type: 'text',
         name: 'modelName',
-        message: 'Name of the model meta you wish to create.',
+        message: 'Name of the GraphQLType you wish to create.  Must have a corresponding config meta file.',
         default: "Complaint"
       },
 
@@ -43,13 +36,65 @@ module.exports = class extends Generator {
     const modelMeta = yaml.safeLoad(fs.readFileSync('config/meta/complaint.yml', 'utf8'));
     const attrs = Object.entries(modelMeta)
 
+
+    const metaModelName = this.props.modelName
     const metaFileName = `${this.props.modelName.charAt(0).toLowerCase()}${this.props.modelName.slice(1)}`
+    const metaFolderName = `${this.props.modelName.charAt(0).toLowerCase()}${this.props.modelName.slice(1)}`
 
     // Write GraphQL type filea
-    
     this.fs.copyTpl(
       this.templatePath('graphql/types/modelName.js'),
       this.destinationPath(`graphql/types/${metaFileName}.js`),
+      {
+        modelName: this.props.modelName,
+        modelAttrs: attrs
+      }
+    );
+
+    // Write GraphQL List Query
+    this.fs.copyTpl(
+      this.templatePath('graphql/queries/modelName/listModelNames.js'),
+      this.destinationPath(`graphql/queries/${metaFileName}/list${metaFileName}s.js`),
+      {
+        modelName: this.props.modelName,
+        modelAttrs: attrs
+      }
+    );
+
+    // Write GraphQL Read Query
+    this.fs.copyTpl(
+      this.templatePath('graphql/queries/modelName/readModelName.js'),
+      this.destinationPath(`graphql/queries/${metaFileName}/read${metaFileName}.js`),
+      {
+        modelName: this.props.modelName,
+        modelAttrs: attrs
+      }
+    );
+
+    // Write GraphQL Create Mutation
+    this.fs.copyTpl(
+      this.templatePath('graphql/mutations/modelName/createModelName.js'),
+      this.destinationPath(`graphql/mutations/${metaFileName}/create${metaFileName}.js`),
+      {
+        modelName: this.props.modelName,
+        modelAttrs: attrs
+      }
+    );
+
+    // Write GraphQL Update Mutation
+    this.fs.copyTpl(
+      this.templatePath('graphql/mutations/modelName/updateModelName.js'),
+      this.destinationPath(`graphql/mutations/${metaFileName}/update${metaFileName}.js`),
+      {
+        modelName: this.props.modelName,
+        modelAttrs: attrs
+      }
+    );
+
+    // Write GraphQL Delete Mutation
+    this.fs.copyTpl(
+      this.templatePath('graphql/mutations/modelName/deleteModelName.js'),
+      this.destinationPath(`graphql/mutations/${metaFileName}/delete${metaFileName}.js`),
       {
         modelName: this.props.modelName,
         modelAttrs: attrs

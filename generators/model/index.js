@@ -35,8 +35,6 @@ module.exports = class extends Generator {
     // for testing set the model automatically
     this.props.modelName = "Complaint"
 
-    console.log('--------- parsing yaml ----------------')
-    
     const modelFileName = `${this.props.modelName.charAt(0).toLowerCase()}${this.props.modelName.slice(1)}.js`
     
     // Retrieve model attributes from meta file
@@ -45,8 +43,6 @@ module.exports = class extends Generator {
       const modelMeta = yaml.safeLoad(fs.readFileSync('config/meta/complaint.yml', 'utf8'));
       const attrs = Object.entries(modelMeta)
       
-      // console.log(attrs)
-
       this.fs.copyTpl(
         this.templatePath('models/modelName.js'),
         this.destinationPath(`models/${modelFileName}`),
