@@ -1,37 +1,43 @@
 const GraphQL = require("graphql");
-const GraphQLInputObjectType = GraphQL.GraphQLInputObjectType;
 const GraphQLObjectType = GraphQL.GraphQLObjectType;
+const GraphQLInputObjectType = GraphQL.GraphQLInputObjectType;
 const GraphQLString = GraphQL.GraphQLString
+const GraphQLInt = GraphQL.GraphQLInt
+const GraphQLFloat = GraphQL.GraphQLFloat
+const GraphQLBoolean = GraphQL.GraphQLBoolean
 const GraphQLList = GraphQL.GraphQLList
 
-const <%= modelName %>Type = require('../../types/<%= modelName %>')
-const ErrorType = require('../../types/error')
-
 const Models = require('../../../models/index.js')
+const ErrorType = require('../../types/error')
+const <%= modelName %>Type = require('../../types/<%= modelName.toLowerCase() %>')
 
-const Create<%= modelName %>Input = new GraphQLInputObjectType({
-    name: "Create<%= modelName %>Input",
+const Update<%= modelName %>Input = new GraphQLInputObjectType({
+    name: "Update<%= modelName %>Input",
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt',
     fields() {
         return {
-            name: {
-                type: GraphQLString,
-                description: 'Lorem ipsum dolar sit'
-            },
-            email: {
-                type: GraphQLString,
-                description: 'Lorem ipsum dolar sit'
-            },
-            description: {
-                type: GraphQLString,
-                description: 'Lorem ipsum dolar sit'
-            }
+            <% var dataTypes = {
+                'VARCHAR(255)': 'GraphQLString',
+                'INT(11)': 'GraphQLInt',
+                'TINYINT(1)': 'GraphQLBoolean',
+                'TEXT': 'GraphQLString',
+                'DATE': 'GraphQLString',
+                'DATETIME': 'GraphQLString',
+                'DECIMAL': 'GraphQLFloat',
+                'FLOAT': 'GraphQLFloat',
+              } -%>
+              <% for (var i = 0; i < modelAttrs.length; i++) { %>
+                <%= modelAttrs[i][0] %>: {
+                  type: <%= dataTypes[modelAttrs[i][1]["type"]] %>,
+                  description: "description",
+                },
+                <% } %>
         }
     }
 })
 
-const Create<%= modelName %>Payload = new GraphQLObjectType({
-    name: 'Create<%= modelName %>Payload',
+const Update<%= modelName %>Payload = new GraphQLObjectType({
+    name: 'Update<%= modelName %>Payload',
     description: 'Lorem ipsum dolar sit',
     fields() { 
         return {
@@ -43,7 +49,7 @@ const Create<%= modelName %>Payload = new GraphQLObjectType({
                 type: new GraphQLList(ErrorType),
                 description: 'Lorem ipsum dolar sit'
             },
-            <%= modelName %>: {
+            <%= modelName.toLowerCase() %>: {
                 type: <%= modelName %>Type,
                 description: 'Lorem ipsum dolar sit'
             }
@@ -52,19 +58,19 @@ const Create<%= modelName %>Payload = new GraphQLObjectType({
 })
 
 module.exports = {
-  type: Create<%= modelName %>Payload,
+  type: Update<%= modelName %>Payload,
   description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.',
   args: {
     input: {
-      type: Create<%= modelName %>Input,
+      type: Update<%= modelName %>Input,
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.',
     }
   },
   
   resolve: async (root, args) => {
     let response = {}
-    await Models.<%= modelName %>.create(args.input).then((<%= modelName %>) => {
-        response.<%= modelName %> = <%= modelName %>
+    await Models.<%= modelName %>.create(args.input).then((<%= modelName.toLowerCase() %>) => {
+        response.<%= modelName.toLowerCase() %> = <%= modelName.toLowerCase() %>
     }).catch((err) => {
         let errors = err.errors.map(error => {
             return {

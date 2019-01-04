@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       'TINYINT(1)': 'BOOLEAN',
       'TEXT': 'TEXT',
       'DATE': 'DATE',
-      'DATETIME': 'TIMESTAMP',
+      'DATETIME': 'TIME',
       'DECIMAL': 'DECIMAL',
       'FLOAT': 'FLOAT',
     } -%>

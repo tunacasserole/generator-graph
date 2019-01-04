@@ -1,37 +1,43 @@
 const GraphQL = require("graphql");
-const GraphQLInputObjectType = GraphQL.GraphQLInputObjectType;
 const GraphQLObjectType = GraphQL.GraphQLObjectType;
+const GraphQLInputObjectType = GraphQL.GraphQLInputObjectType;
 const GraphQLString = GraphQL.GraphQLString
+const GraphQLInt = GraphQL.GraphQLInt
+const GraphQLFloat = GraphQL.GraphQLFloat
+const GraphQLBoolean = GraphQL.GraphQLBoolean
 const GraphQLList = GraphQL.GraphQLList
 
-const UserType = require('../../types/user')
-const ErrorType = require('../../types/error')
-
 const Models = require('../../../models/index.js')
+const ErrorType = require('../../types/error')
+const <%= modelName %>Type = require('../../types/<%= modelName.toLowerCase() %>')
 
-const DeleteUserInput = new GraphQLInputObjectType({
-    name: "DeleteUserInput",
+const Create<%= modelName %>Input = new GraphQLInputObjectType({
+    name: "Create<%= modelName %>Input",
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt',
     fields() {
         return {
-            name: {
-                type: GraphQLString,
-                description: 'Lorem ipsum dolar sit'
-            },
-            email: {
-                type: GraphQLString,
-                description: 'Lorem ipsum dolar sit'
-            },
-            description: {
-                type: GraphQLString,
-                description: 'Lorem ipsum dolar sit'
-            }
+            <% var dataTypes = {
+                'VARCHAR(255)': 'GraphQLString',
+                'INT(11)': 'GraphQLInt',
+                'TINYINT(1)': 'GraphQLBoolean',
+                'TEXT': 'GraphQLString',
+                'DATE': 'GraphQLString',
+                'DATETIME': 'GraphQLString',
+                'DECIMAL': 'GraphQLFloat',
+                'FLOAT': 'GraphQLFloat',
+              } -%>
+              <% for (var i = 0; i < modelAttrs.length; i++) { %>
+                <%= modelAttrs[i][0] %>: {
+                  type: <%= dataTypes[modelAttrs[i][1]["type"]] %>,
+                  description: "description",
+                },
+                <% } %>
         }
     }
 })
 
-const DeleteUserPayload = new GraphQLObjectType({
-    name: 'DeleteUserPayload',
+const Create<%= modelName %>Payload = new GraphQLObjectType({
+    name: 'Create<%= modelName %>Payload',
     description: 'Lorem ipsum dolar sit',
     fields() { 
         return {
@@ -43,8 +49,8 @@ const DeleteUserPayload = new GraphQLObjectType({
                 type: new GraphQLList(ErrorType),
                 description: 'Lorem ipsum dolar sit'
             },
-            user: {
-                type: UserType,
+            <%= modelName %>: {
+                type: <%= modelName %>Type,
                 description: 'Lorem ipsum dolar sit'
             }
         }
@@ -52,19 +58,19 @@ const DeleteUserPayload = new GraphQLObjectType({
 })
 
 module.exports = {
-  type: DeleteUserPayload,
+  type: Create<%= modelName %>Payload,
   description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.',
   args: {
     input: {
-      type: DeleteUserInput,
+      type: Create<%= modelName %>Input,
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.',
     }
   },
   
   resolve: async (root, args) => {
     let response = {}
-    await Models.User.create(args.input).then((user) => {
-        response.user = user
+    await Models.<%= modelName %>.create(args.input).then((<%= modelName %>) => {
+        response.<%= modelName %> = <%= modelName %>
     }).catch((err) => {
         let errors = err.errors.map(error => {
             return {

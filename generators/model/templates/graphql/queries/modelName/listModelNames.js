@@ -1,9 +1,11 @@
-const GraphQL = require('graphql')
-const GraphQLList = GraphQL.GraphQLList
-const GraphQLString = GraphQL.GraphQLString
-const GraphQLBoolean = GraphQL.GraphQLBoolean
-const GraphQLInt = GraphQL.GraphQLInt
+const GraphQL = require("graphql");
 const GraphQLObjectType = GraphQL.GraphQLObjectType;
+const GraphQLInputObjectType = GraphQL.GraphQLInputObjectType;
+const GraphQLString = GraphQL.GraphQLString
+const GraphQLInt = GraphQL.GraphQLInt
+const GraphQLFloat = GraphQL.GraphQLFloat
+const GraphQLBoolean = GraphQL.GraphQLBoolean
+const GraphQLList = GraphQL.GraphQLList
 
 const Models = require('../../../models/index.js')
 
@@ -25,7 +27,6 @@ const <%= modelName %>ListType = new GraphQLObjectType({
         <%= modelAttrs[i][0] %>: {
           type: <%= dataTypes[modelAttrs[i][1]["type"]] %>,
           description: "description",
-         
         },
         <% } %>
         
