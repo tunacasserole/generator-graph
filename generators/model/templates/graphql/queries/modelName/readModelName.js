@@ -24,9 +24,9 @@ module.exports = {
       'DECIMAL': 'GraphQLFloat',
       'FLOAT': 'GraphQLFloat',
     } -%>
-    <% for (var i = 0; i < modelAttrs.length; i++) { %>
-      <%= modelAttrs[i][0] %>: {
-        type: <%= dataTypes[modelAttrs[i][1]["type"]] %>,
+    <% for (var i = 0; i < attributes.length; i++) { %>
+      <%= attributes[i][0] %>: {
+        type: <%= dataTypes[attributes[i][1]["type"]] %>,
         description: "description",
       },
       <% } %>

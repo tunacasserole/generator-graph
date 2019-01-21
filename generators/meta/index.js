@@ -23,13 +23,6 @@ module.exports = class extends Generator {
         default: "complaints"
       },
 
-      {
-        type: 'text',
-        name: 'modelName',
-        message: 'Name of the model meta you wish to create.',
-        default: "Complaint"
-      },
-
     ];
 
     return this.prompt(prompts).then(props => {
@@ -39,8 +32,6 @@ module.exports = class extends Generator {
   }
 
   writing() {
-    
-    const metaFileName = `${this.props.modelName.charAt(0).toLowerCase()}${this.props.modelName.slice(1)}`
     
     var config = require(this.destinationRoot() + '/config/sequelize.js');
 
@@ -64,14 +55,13 @@ module.exports = class extends Generator {
       // Write Meta YML File
       this.fs.copyTpl(
         this.templatePath('config/modelName.yml'),
-        this.destinationPath(`config/meta/${metaFileName}.yml`),
+        this.destinationPath(`config/meta/${this.props.tableName}.yml`),
         {
           modelAttrs: columns
         }
         );
         
       // process.exit()
-
 
     })
 

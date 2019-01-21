@@ -1,12 +1,10 @@
 {
   "name": "generator-graph",
-  "version": "0.0.0",
-  ".description": "Generates a node, sequelize, graphql project with model and type files for every table in any database that you connect to.\"",
-  "homepage": "yomama.com",
+  "version": "1.0.0",
+  "description": "Generates a node, sequelize, graphql project with model and type files for every table in any database that you connect to.\"",
   "author": {
-    "name": "Henderwood Corp.",
-    "email": "aaron@buildit.io",
-    "url": "www.ituna.io"
+    "name": "South Carolina DHHS",
+    "email": "ahenderson@rfa.sc.gov"
   },
   "files": [
     "generators"
