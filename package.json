@@ -1,7 +1,7 @@
 {
   "name": "generator-graph",
   "version": "1.0.0",
-  "description": "Generates a node, sequelize, graphql project with model and type files for every table in any database that you connect to.\"",
+  "description": "Generates a rails, graphql project with model and type files for every table in any database that you connect to.\"",
   "author": {
     "name": "South Carolina DHHS",
     "email": "ahenderson@rfa.sc.gov"
@@ -33,7 +33,7 @@
     "dotenv": "^6.2.0",
     "mysql2": "^1.6.4",
     "sequelize": "^4.42.0",
-    "yeoman-generator": "^2.0.1",
+    "yeoman-generator": "^2.0.5",
     "yosay": "^2.0.1"
   },
   "jest": {

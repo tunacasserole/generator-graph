@@ -1,5 +1,5 @@
 # generator-graph [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
-> Generates a node, sequelize, graphql project with model and type files for every table in any database that you connect to.&#34;
+> Generates a rails, graphql project with model and type files for every table in any database that you connect to.&#34;
 
 ## Installation
 

@@ -3,6 +3,8 @@
 const Generator = require('yeoman-generator');
 const chalk = require('chalk');
 const yosay = require('yosay');
+const yaml = require('js-yaml');
+const fs = require('fs');
 
 const Sequelize = require('sequelize');
 
@@ -18,7 +20,7 @@ module.exports = class extends Generator {
 
       {
         type: 'text',
-        name: 'tableName',
+        name: 'table_name',
         message: 'Name of the table from which to rip meta.',
         default: "complaints"
       },
@@ -33,12 +35,14 @@ module.exports = class extends Generator {
 
   writing() {
     
-    var config = require(this.destinationRoot() + '/config/sequelize.js');
-
+    // var config = require(this.destinationRoot() + '/config/database.yml');
+    const config = yaml.safeLoad(fs.readFileSync(this.destinationRoot() + '/config/database.yml', 'utf8'));
+    console.log(config['development'])
+    
     var sequelize = new Sequelize(
-      config.database,
-      config.username,
-      config.password,
+      config['development'].database,
+      config['development'].username,
+      config['development'].password,
       {
         // DB Options
         dialect: 'mysql',
@@ -48,16 +52,16 @@ module.exports = class extends Generator {
         paranoid: true
       });
       
-    sequelize.getQueryInterface().describeTable(this.props.tableName).then((tableObject) => {
+    sequelize.getQueryInterface().describeTable(this.props.table_name).then((tableObject) => {
 
       const columns = Object.entries(tableObject)
 
       // Write Meta YML File
       this.fs.copyTpl(
         this.templatePath('config/modelName.yml'),
-        this.destinationPath(`config/meta/${this.props.tableName}.yml`),
+        this.destinationPath(`config/meta/${this.props.table_name}.yml`),
         {
-          modelAttrs: columns
+          attributes: columns
         }
         );
         
