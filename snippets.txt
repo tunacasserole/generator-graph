@@ -1,0 +1,5 @@
+    <% for (var i = 0; i < modelAttrs.length; i++) { %>
+      <%= modelAttrs[i] %>: {
+      type: DataTypes.INTEGER
+    }
+    <% } %>
